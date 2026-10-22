@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Duitku – Catatan Keuangan</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+<svg class="flag" viewBox="0 0 200 90" fill="none" stroke="#f6dc7a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M0 20Q60 28 130 0M8 24L22 80 40 28M52 26L72 78 86 22M98 18L122 70 130 8"/></svg>
+<div class="wrap"><div class="top">
+<div class="brand"><div class="bag">👛</div><div><h1>Duitku</h1><p>Teman setia catatan keuanganmu</p></div></div>
+</div></div>
+</header>
+
+<div class="wrap">
+<nav id="nav">
+<button class="on" data-v="dash">🏠 Dashboard</button>
+<button data-v="hist">📒 Riwayat</button>
+<button data-v="rep">📊 Laporan</button>
+</nav>
+
+<section class="view on" id="dash">
+<div class="grid g3">
+<div class="card stat bal"><span class="ic">👛</span><small>Total Saldo</small><b id="dBal"></b></div>
+<div class="card stat"><span class="ic">📥</span><small>Total Pemasukan</small><b class="inc" id="dInc"></b></div>
+<div class="card stat"><span class="ic">📤</span><small>Total Pengeluaran</small><b class="exp" id="dExp"></b></div>
+</div>
+<div class="grid g2" style="margin-top:16px">
+<div class="card"><h3>Transaksi Terbaru <button class="btn btn-sec" style="padding:6px 12px;font-size:13px" onclick="go('hist')">Lihat semua</button></h3><div id="dRecent"></div></div>
+<div class="card"><h3 id="mTitle">Bulan Ini</h3>
+<div id="mSum"></div></div>
+</div>
+</section>
+
+<section class="view" id="hist">
+<div class="card">
+<div class="tools">
+<input class="s" id="q" type="search" placeholder="🔍 Cari keterangan atau kategori…">
+<select id="fType"><option value="">Semua jenis</option><option value="in">Pemasukan</option><option value="out">Pengeluaran</option></select>
+<select id="fCat"></select>
+<select id="fSort"><option value="desc">Terbaru dulu</option><option value="asc">Terlama dulu</option></select>
+</div>
+<div id="hList"></div>
+</div>
+</section>
+
+<section class="view" id="rep">
+<div class="card" style="margin-bottom:16px">
+<div class="tools" style="margin:0">
+<select id="rPre"><option value="month">Bulan ini</option><option value="last">Bulan lalu</option><option value="7">7 hari terakhir</option><option value="30">30 hari terakhir</option><option value="year">Tahun ini</option><option value="custom">Pilih tanggal…</option></select>
+<input type="date" id="rFrom"><input type="date" id="rTo">
+<div class="seg" style="min-width:170px"><button class="on" data-m="day">Harian</button><button data-m="month">Bulanan</button></div>
+</div>
+<div class="export-actions">
+<button class="btn btn-main" type="button" onclick="exportCSV()">⬇ Unduh Excel/CSV</button>
+<button class="btn btn-sec" type="button" onclick="printReport()">🖨 Cetak / Simpan PDF</button>
+</div>
+</div>
+<div class="grid g3" id="rStats" style="margin-bottom:16px"></div>
+<div class="card" style="margin-bottom:16px"><h3>Pemasukan vs Pengeluaran</h3><div class="chart" id="chart"></div>
+<div class="legend"><span><i style="background:var(--sage)"></i>Pemasukan</span><span><i style="background:var(--red)"></i>Pengeluaran</span></div></div>
+<div class="grid g2">
+<div class="card"><h3>Pengeluaran Terbesar</h3><div id="rCats"></div></div>
+<div class="card"><h3>Ringkasan</h3><div style="overflow-x:auto"><table id="rTable"></table></div></div>
+</div>
+</section>
+</div>
+
+<button class="btn btn-main fab" onclick="openForm()" aria-label="Tambah transaksi">+</button>
+
+<div class="modal" id="mdl"><div class="box">
+<h2 id="mTtl">Tambah Transaksi</h2>
+<div class="f"><div class="type"><button class="o on" data-t="out">📤 Pengeluaran</button><button class="i" data-t="in">📥 Pemasukan</button></div></div>
+<div class="f"><label>Nominal (Rp)</label><input id="fAmt" inputmode="numeric" placeholder="contoh: 25.000"></div>
+<div class="f"><label>Kategori</label><select id="fCategory"></select></div>
+<div class="f"><label>Tanggal</label><input type="date" id="fDate"></div>
+<div class="f"><label>Keterangan (opsional)</label><input id="fNote" maxlength="80" placeholder="mis. Makan siang"></div>
+<div class="mf"><button class="btn btn-sec" onclick="closeM('mdl')">Batal</button><button class="btn btn-main" onclick="save()">Simpan</button></div>
+</div></div>
+
+<div class="modal" id="cfm"><div class="box" style="max-width:340px;text-align:center">
+<div style="font-size:48px">🗑️</div><h2>Hapus transaksi?</h2><p style="color:var(--muted)" id="cfmT"></p>
+<div class="mf"><button class="btn btn-sec" onclick="closeM('cfm')">Batal</button><button class="btn btn-del" id="cfmY">Ya, hapus</button></div>
+</div></div>
+
+<script src="script.js"></script>
+</body>
+</html>
